@@ -1,82 +1,91 @@
-const User =  require('../model/user');
+const User = require('../model/user');
 
 
-module.exports.Register = async(req,res) => {
+module.exports.Register = async (req,res) => {
     try{
     const {name,email,password} = req.body;
 
-    const user = new User({name,email,password});
+
+    const user = new User({name,email,password})
+
     await user.save();
-            res.status(201).json({ message: "User registered successfully."});
 
+    return res.status(200).json({
+        message:"Register successfully!!"
+    });
+    }catch(error){
+        console.log('register errorr!!');
 
+        return res.status(500).json({
+            error:"An file occuring in register error!!"
+
+        })
     }
-    catch(error){
- console.error(error);
-        res.status(500).json({ message: "Server error." });
 
-    }
-
-    
 }
 
 
-module.exports.GetUser = async(req,res) => {
+module.exports.get  = async(req,res) => {
     try{
         const user = await User.find();
 
-        return res.status(200).json({
-            message:"user data find successfully",
-            data:user
-        })
-
+    return res.status(200).json({
+        message:"get successfully!!",
+        data:user,
+    });
     }catch(error){
-        console.log('get find error!!')
+        console.log('get errorr!!');
+
         return res.status(500).json({
-            error:"error!"
+            error:"An file occuring in get error!!"
+
         })
     }
 }
 
 
-
-
-
-module.exports.updateUser = async(req,res) => {
+module.exports.update = async(req,res) => {
     try{
-    const {id} = req.query;
+    const {id} = req.query ;
     const updateData = req.body;
 
-const updateuser = await User.findByIdAndUpdate(id,updateData,{new:true});
+    const updateUser = await User.findByIdAndUpdate(id,updateData,{new:true});
 
-return  res.status(200).json({
-    message:"update find ",
-    data:updateuser
-})
+   return res.status(200).json({
+        message:"update successfully!!",
+        data:updateUser,
+    });
+    }catch(error){
+        console.log('update errorr!!');
 
-}catch(error){
-    console.log('err');
-    
+        return res.status(500).json({
+            error:"An file occuring in update error!!"
+
+        })
+    }
 
 }
-}
 
 
 
 
-module.exports.deleteUser = async (req,res) => {
+module.exports.delete = async(req,res) => {
     try{
-    const {id} = req.query;
-    const deleteUser = await User.findByIdAndDelete(id);
+        const {id} = req.query;
 
- return  res.status(200).json({
-    message:"delete find ",
-    data:deleteUser
-})
+        const deleteUser = await User.findByIdAndDelete(id);
+        
 
-}catch(error){
-    console.log('err');
-    
+     return res.status(200).json({
+        message:"delete successfully!!",
+        data:deleteUser,
+    });
+    }catch(error){
+        console.log('delete errorr!!');
 
-}
+        return res.status(500).json({
+            error:"An file occuring in delete error!!"
+
+        })
+    }
 }
